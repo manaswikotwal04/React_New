@@ -1,5 +1,4 @@
 import Header from "./components/Header.js";
-import React from "react";
 import ReactDOM from "react-dom/client";
 import Body from "./components/Body.js";
 const stylecard={
