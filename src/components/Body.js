@@ -1,6 +1,7 @@
 import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
-import shimmer from "./shimmerui";      
+import shimmer from "./shimmerui";  
+import {Link} from "react-router-dom";    
 
 const Body = () => {
   const [listofRestaurants, setRestaurants] = useState([]);
@@ -13,14 +14,15 @@ console.log("Body Rendered");
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.5204&lng=73.8567&page_type=DESKTOP_WEB_LISTING"
+      "https://namastedev.com/api/v1/listRestaurants"
     );
+    console.log(data);
     const json = await data.json();
     console.log("API Response:", json);
 
     // ✅ Correct path (as per your JSON)
     const restaurants =
-      json?.data?.cards?.[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+      json?.data?.data?.cards?.[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
 
 
     setRestaurants(restaurants);
@@ -46,7 +48,7 @@ console.log("Body Rendered");
       </div>
         <button className="filter-btn"
          onClick={()=>{const filteredData = listofRestaurants.filter(
-      (restaurant) => restaurant?.info?.avgRating > 4
+      (restaurant) => restaurant?.data?.avgRating > 4
     );
 
     setFilterRestaurant(filteredData);
@@ -58,10 +60,10 @@ console.log("Body Rendered");
       <div className="res-container">
         {
           filterrestaurant.map((restaurant) => (
-            <RestaurantCard
+            <Link key={"listRestaurantMenu/"+restaurant?.info?.id} to={"listRestaurantMenu/"+restaurant?.info?.id}><RestaurantCard
               key={restaurant?.info?.id}
               resdata={restaurant}
-            />
+            /></Link>
           ))
         }
       </div>

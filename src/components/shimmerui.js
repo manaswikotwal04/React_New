@@ -1,22 +1,13 @@
-const shimmer=()=>{
-    return(
-        <div className="shimmer-container">
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-            <div className="shimmer-card"></div>
-        </div>
-    );
-}
+const shimmer = () => {
+  return (
+    <div className="shimmer-container">
+      {Array(10)
+        .fill("")
+        .map((_, i) => (
+          <div key={i} className="shimmer-card"></div>
+        ))}
+    </div>
+  );
+};
+
 export default shimmer;
