@@ -1,13 +1,14 @@
 import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
-import shimmer from "./shimmerui";  
+import shimmer from "./ShimmerUI";  
 import {Link} from "react-router-dom";    
-
+import {useOnlineStatus} from "../Utils/useOnlineStatus";
+import useOnlineStatus from "../Utils/useOnlineStatus";
 const Body = () => {
   const [listofRestaurants, setRestaurants] = useState([]);
   const [filterrestaurant, setFilterRestaurant] = useState([]);
   const [searchText, setSearchText] = useState("");
-console.log("Body Rendered");
+console.log("Body Rendered",listofRestaurants);
   useEffect(() => {
     fetchData();
   }, []);
@@ -28,25 +29,28 @@ console.log("Body Rendered");
     setRestaurants(restaurants);
     setFilterRestaurant(restaurants);
   };
-
-
+   
+const onlineStatus=useOnlineStatus();
+if(onlineStatus==false){
+  return <h1>🔴 Offline, Please check your internet connection!!</h1>;
+}
 
   return listofRestaurants.length === 0 ? (shimmer()) : (
     <div className="body">
-      <div className="filter">
-      <div className="search">
-        <input type="text" className="search-box" value={searchText}
+      <div className="filter flex">
+      <div className="search m-4 p-4 ">
+        <input type="text" className=" border border-solid" value={searchText}
         onChange={(e)=>{
           setSearchText(e.target.value);
         }} />
-        <button onClick={()=>{
+        <button className="px-4 py-0.5 m-4 bg-gray-200 rounded-lg" onClick={()=>{
           const filterrestaurant=listofRestaurants.filter(
             (res)=>res.info.name.toLowerCase().includes(searchText.toLowerCase())
           );
           setFilterRestaurant(filterrestaurant);
         }}>Search</button>
-      </div>
-        <button className="filter-btn"
+       
+        <button className="px-4 py-0 m-4 bg-gray-200"
          onClick={()=>{const filteredData = listofRestaurants.filter(
       (restaurant) => restaurant?.data?.avgRating > 4
     );
@@ -55,9 +59,10 @@ console.log("Body Rendered");
          }}>
           Top Rated
         </button>
+       </div>
       </div>
 
-      <div className="res-container">
+      <div className="flex flex-wrap ">
         {
           filterrestaurant.map((restaurant) => (
             <Link key={"listRestaurantMenu/"+restaurant?.info?.id} to={"listRestaurantMenu/"+restaurant?.info?.id}><RestaurantCard
